@@ -349,7 +349,7 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
             // replaced properly during the merge.
             $headers['To'] = array('[Name] <[*to]>');
             $headers['Date'] = array('[*date]');
-            $headers['Subject'] = array('[Subject]');
+            //$headers['Subject'] = array('[Subject]');
 
             if (isset($headers['List-Unsubscribe'])) {
                 $headers['List-Unsubscribe'] = str_replace('##toAddress##', '[*to]', $headers['List-Unsubscribe']);

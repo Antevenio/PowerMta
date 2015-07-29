@@ -275,4 +275,16 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
         return $this;
     }
 
+    protected function _encodeHeader($value)
+    {
+        if (Zend_Mime::isPrintable($value) === false) {
+            if ($this->getHeaderEncoding() === Zend_Mime::ENCODING_QUOTEDPRINTABLE) {
+                $value = Zend_Mime::encodeQuotedPrintableHeader($value, $this->getCharset(), Zend_Mime::LINELENGTH, '');
+            } else {
+                $value = Zend_Mime::encodeBase64Header($value, $this->getCharset(), Zend_Mime::LINELENGTH, '');
+            }
+        }
+
+        return $value;
+    }
 }
