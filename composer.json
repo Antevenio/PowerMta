@@ -1,0 +1,4 @@
+{
+    "name": "mitchenall/PowerMta", 
+    "description": "Zend_Mail protocol and transport extensions for doing Mail merge with Port25's PowerMTA" 
+}
