@@ -98,13 +98,15 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
      */
     public function setAlternateSubject($subject)
     {
-        $subject = strtr($subject,"\r\n\t–",'???-');
+        //$subject = strtr($subject,"\r\n\t–",'???-');
+        $subject = strtr($subject,"\r\n\t",'???');
         $this->_alternateSubject = $this->_encodeHeader($subject);
     }
 
     public function setSubject($subject)
     {
-        $subject = strtr($subject,"\r\n\t–",'???-');
+        //$subject = strtr($subject,"\r\n\t–",'???-');
+        $subject = strtr($subject,"\r\n\t",'???');
         parent::setSubject($subject);
     }
 

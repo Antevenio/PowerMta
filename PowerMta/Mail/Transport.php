@@ -125,7 +125,7 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
 
             $defaultMergeData = array(
                 'Name'      => $recipient->getName(),
-                'Subject'   => $this->getMailSubject($recipient),
+                'Subject'   => addslashes($this->getMailSubject($recipient)),
                 'parts'     => $this->getPartsForRecipient($recipient)
             );
 
@@ -310,6 +310,10 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
         if ($variableName == '*parts') {
             $encoded = sprintf('%s=%s', $variableName, $variableValue);
         } else {
+            $variableValue = addslashes($variableValue);
+            $variableValue = Zend_Mime::encodeQuotedPrintable($variableValue, 4096);
+            $variableValue = str_replace("\r","",$variableValue);
+            $variableValue = str_replace("\n"," ",$variableValue);
             $encoded = sprintf('%s="%s"', $variableName, $variableValue);
         }
         return $encoded;
