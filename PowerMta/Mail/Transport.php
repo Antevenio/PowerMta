@@ -351,7 +351,11 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
             // as this is a mailmerge operation, we need to modify the
             // standard 'To' and 'Date' headers to make sure they get
             // replaced properly during the merge.
-            $headers['To'] = array('[Name] <[*to]>');
+            $headers['To'] = array(
+                PowerMta_Mail_Merge::encodeHeaderValue(
+                    $this->_mail->getHeaderEncoding(), $this->_mail->getCharset(),
+                    '[Name]')." <[*to]>"
+            );
             $headers['Date'] = array('[*date]');
             //$headers['Subject'] = array('[Subject]');
 

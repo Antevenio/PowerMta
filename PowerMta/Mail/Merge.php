@@ -188,7 +188,7 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
      */
     public function addMergeRecipient(PowerMta_Mail_Merge_Recipient $recipient)
     {
-        $this->_recipients[$recipient->getEmailAddress()] = $recipient;
+        $this->_recipients[] = $recipient;
         return $this;
     }
 
@@ -279,14 +279,31 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
 
     protected function _encodeHeader($value)
     {
-        if (Zend_Mime::isPrintable($value) === false) {
-            if ($this->getHeaderEncoding() === Zend_Mime::ENCODING_QUOTEDPRINTABLE) {
-                $value = Zend_Mime::encodeQuotedPrintableHeader($value, $this->getCharset(), Zend_Mime::LINELENGTH, '');
+        return static::encodeHeaderValue($this->getHeaderEncoding(), $this->getCharset(), $value);
+    }
+
+    public static function shouldEncodeHeaderValue($value)
+    {
+        return (Zend_Mime::isPrintable($value) === false || strpos($value, "[") !== false);
+    }
+
+    public static function encodeHeaderValue($encoding, $charset, $value)
+    {
+        error_log(
+            "shouldEncodeHeaderValue($value) = ".
+            static::shouldEncodeHeaderValue($value)
+        );
+        if (self::shouldEncodeHeaderValue($value)) {
+            if ($encoding == Zend_Mime::ENCODING_QUOTEDPRINTABLE) {
+                $value = Zend_Mime::encodeQuotedPrintableHeader(
+                    $value, $charset, Zend_Mime::LINELENGTH, ''
+                );
             } else {
-                $value = Zend_Mime::encodeBase64Header($value, $this->getCharset(), Zend_Mime::LINELENGTH, '');
+                $value = Zend_Mime::encodeBase64Header(
+                    $value, $charset, Zend_Mime::LINELENGTH, ''
+                );
             }
         }
-
         return $value;
     }
 }
