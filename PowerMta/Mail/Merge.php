@@ -289,10 +289,6 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
 
     public static function encodeHeaderValue($encoding, $charset, $value)
     {
-        error_log(
-            "shouldEncodeHeaderValue($value) = ".
-            static::shouldEncodeHeaderValue($value)
-        );
         if (self::shouldEncodeHeaderValue($value)) {
             if ($encoding == Zend_Mime::ENCODING_QUOTEDPRINTABLE) {
                 $value = Zend_Mime::encodeQuotedPrintableHeader(
