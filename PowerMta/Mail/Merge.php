@@ -284,7 +284,14 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
 
     public static function shouldEncodeHeaderValue($value)
     {
-        return (Zend_Mime::isPrintable($value) === false || strpos($value, "[") !== false);
+        return
+            Zend_Mime::isPrintable($value) === false ||
+            self::variablesInString($value);
+    }
+
+    protected static function variablesInString($value)
+    {
+        return (strpos($value, "[") !== false);
     }
 
     public static function encodeHeaderValue($encoding, $charset, $value)
@@ -295,11 +302,26 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
                     $value, $charset, Zend_Mime::LINELENGTH, ''
                 );
             } else {
+
                 $value = Zend_Mime::encodeBase64Header(
                     $value, $charset, Zend_Mime::LINELENGTH, ''
                 );
             }
         }
         return $value;
+    }
+
+    public function addHeader($name, $value, $append = false)
+    {
+        $rawHeaders = [
+            "list-unsubscribe"
+        ];
+
+        if (in_array(strtolower($name), $rawHeaders)) {
+            $this->_storeHeader($name, $value, $append);
+            return $this;
+        }
+
+        return parent::addHeader($name, $value, $append);
     }
 }
