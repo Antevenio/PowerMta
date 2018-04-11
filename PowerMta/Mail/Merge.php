@@ -301,11 +301,23 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
                 $value = Zend_Mime::encodeQuotedPrintableHeader(
                     $value, $charset, Zend_Mime::LINELENGTH, ''
                 );
+                $value = self::_decodeEncodedFields($value);
             } else {
 
                 $value = Zend_Mime::encodeBase64Header(
                     $value, $charset, Zend_Mime::LINELENGTH, ''
                 );
+            }
+        }
+        return $value;
+    }
+
+    protected static function _decodeEncodedFields($value)
+    {
+        if (preg_match_all('/\[.*?\]/', $value, $matches)) {
+            foreach ($matches[0] as $field) {
+                $decoded = quoted_printable_decode($field);
+                $value = preg_replace('/'.preg_quote($field).'/', $decoded, $value);
             }
         }
         return $value;
