@@ -21,6 +21,7 @@
  */
 interface PowerMta_Mail_Merge_Recipient
 {
+    const TO_NAME_VARIABLE = 'ToName';
     /**
      * @return string
      */

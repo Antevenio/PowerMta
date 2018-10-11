@@ -355,7 +355,7 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
                 PowerMta_Mail_Merge::encodeHeaderValue(
                     $this->_mail->getHeaderEncoding(),
                     $this->_mail->getCharset(),
-                    '[ToName]'
+                    PowerMta_Mail_Merge_Recipient::TO_NAME_VARIABLE
                 )." <[*to]>"
             );
             $headers['Date'] = array('[*date]');
