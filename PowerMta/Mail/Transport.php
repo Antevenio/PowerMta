@@ -355,11 +355,10 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
                 PowerMta_Mail_Merge::encodeHeaderValue(
                     $this->_mail->getHeaderEncoding(),
                     $this->_mail->getCharset(),
-                    PowerMta_Mail_Merge_Recipient::TO_NAME_VARIABLE
-                )." <[*to]>"
+                    '[' . PowerMta_Mail_Merge_Recipient::TO_NAME_VARIABLE . ']'
+                ). ' <[*to]>'
             );
             $headers['Date'] = array('[*date]');
-            //$headers['Subject'] = array('[Subject]');
 
             if (isset($headers['List-Unsubscribe'])) {
                 $headers['List-Unsubscribe'] = str_replace('##toAddress##', '[*to]', $headers['List-Unsubscribe']);
