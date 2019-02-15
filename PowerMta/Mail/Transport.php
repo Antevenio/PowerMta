@@ -377,7 +377,7 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
         }
 
         // Prepare headers
-        parent::_prepareHeaders($headers);
+        Zend_Mail_Transport_Abstract::_prepareHeaders($headers);
     }
 
 
