@@ -351,14 +351,20 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
             // as this is a mailmerge operation, we need to modify the
             // standard 'To' and 'Date' headers to make sure they get
             // replaced properly during the merge.
-            $headers['To'] = array(
-                PowerMta_Mail_Merge::encodeHeaderValue(
-                    $this->_mail->getHeaderEncoding(),
-                    $this->_mail->getCharset(),
-                    '[' . PowerMta_Mail_Merge_Recipient::TO_NAME_VARIABLE . ']'
-                ). ' <[*to]>'
-            );
-            $headers['Date'] = array('[*date]');
+            if (isset($headers['X-OriginalRecipient'])) {
+                $headers['To'] = $headers['X-OriginalRecipient'];
+                $headers['Bcc'] = [ '[*to]' ];
+                unset($headers['X-OriginalRecipient']);
+            } else {
+                $headers['To'] = [
+                    PowerMta_Mail_Merge::encodeHeaderValue(
+                        $this->_mail->getHeaderEncoding(),
+                        $this->_mail->getCharset(),
+                        '[' . PowerMta_Mail_Merge_Recipient::TO_NAME_VARIABLE . ']'
+                    ) . ' <[*to]>'
+                ];
+            }
+            $headers['Date'] = ['[*date]'];
 
             if (isset($headers['List-Unsubscribe'])) {
                 $headers['List-Unsubscribe'] = str_replace('##toAddress##', '[*to]', $headers['List-Unsubscribe']);
