@@ -326,7 +326,9 @@ class PowerMta_Mail_Merge extends PowerMta_Mail
     public function addHeader($name, $value, $append = false)
     {
         $rawHeaders = [
-            "list-unsubscribe"
+            "list-unsubscribe",
+            "bcc",
+            "cc"
         ];
 
         if (in_array(strtolower($name), $rawHeaders)) {
