@@ -345,8 +345,6 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
             throw new Zend_Mail_Transport_Exception('_prepareHeaders requires a registered Zend_Mail object');
         }
 
-        unset($headers['Bcc']);
-
         if ($this->_mailmerge) {
             // as this is a mailmerge operation, we need to modify the
             // standard 'To' and 'Date' headers to make sure they get
