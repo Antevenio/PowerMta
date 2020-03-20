@@ -353,7 +353,6 @@ class PowerMta_Mail_Transport extends Zend_Mail_Transport_Smtp
             // replaced properly during the merge.
             if (isset($headers['X-OriginalRecipient'])) {
                 $headers['To'] = $headers['X-OriginalRecipient'];
-                $headers['Bcc'] = [ '[*to]' ];
                 unset($headers['X-OriginalRecipient']);
             } else {
                 $headers['To'] = [
